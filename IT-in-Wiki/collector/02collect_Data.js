@@ -4,11 +4,13 @@ var fs = require('fs');
 var forEach = require('async-foreach').forEach;
 var wikiLinks = require("./data/wikiLinks.json");
 
+
 var wikiPages = [];
 var i = 0;
 var f = "data/wikiPages.json";
 
 forEach(wikiLinks, function(link,index, arr) {
+    
     request(link, function(error, response, page) {
             wikiPages.push(collectData(page,link));
             i++;
@@ -19,10 +21,11 @@ forEach(wikiLinks, function(link,index, arr) {
                 console.log("end");
             }
     });
+
 });
 
-
 function collectData(innerPage, currURL) {
+    innerPage = clearData(innerPage);
     //console.log("collectData");
     var pageData;
     var subTitlesArr = [];
@@ -46,7 +49,7 @@ function collectData(innerPage, currURL) {
         "subTitles": subTitlesArr,
         "url": currURL
     };
-    
+    console.log(pageData);
     return pageData;
 }
 
